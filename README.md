@@ -9,7 +9,8 @@ Prerequisite packages to use this script, some of these will already be included
 pdftk\
 libpng-dev libjpeg-dev libtiff-dev\
 imagemagick\
-poppler-utils
+poppler-utils\
+tesseract
 
 ## Running guidance
 
