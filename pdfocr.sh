@@ -14,7 +14,7 @@ for PDF_FILE in $PDF_FILES; do
   # Create a directory for the processed file
   mkdir -p "$BASE_NAME"
 
-  echo "Processing: $BASE_NAME"
+  echo -e "> Processing file: $BASE_NAME\n> Splitting PDF into individual pages"
 
   # Split the PDF into individual pages
   pdftk "$PDF_FILE" burst output "$BASE_NAME/%03d.pdf"
@@ -30,14 +30,18 @@ for PDF_FILE in $PDF_FILES; do
     # Extract the filename without the .pdf extension
     PAGE_BASE_NAME=$(basename "$PAGE_FILE" .pdf)
 
-    echo "Converting to PNG: $PAGE_BASE_NAME"
+    echo "> Converting to PNG: $BASE_NAME page $PAGE_BASE_NAME"
 
     # Convert each page to a PNG image
     convert -units PixelsPerInch -density 300 "$PAGE_FILE" "$BASE_NAME/png/$PAGE_BASE_NAME.png"
 
+    echo "> OCR analysing PNG: $BASE_NAME page $PAGE_BASE_NAME and saving PDF of page"
+
     # OCR png file and produce PDF
     tesseract "$BASE_NAME/png/$PAGE_BASE_NAME.png" "$BASE_NAME/png/ocrpdf/$PAGE_BASE_NAME" pdf
   done
+
+  echo "> Merging all pages of $BASE_NAME back together"
 
   # Find OCR PDF files to be merged back to multi-page documents
   # Use find with -print0 and xargs -0 to handle spaces in filenames correctly
@@ -50,6 +54,21 @@ for PDF_FILE in $PDF_FILES; do
   else
     echo "No OCR files found for merging in $BASE_NAME/png/ocrpdf"
   fi
+
+  echo "> Deleting original PDF and intermediate files & folder"
+  # Delete the original PDF file
+  rm "$PDF_FILE"
+
+  # Delete the intermediate files and directories
+  rm -r "$BASE_NAME"
+
 done
 
-echo "Finished!"
+  echo "> Final tidy up"
+  # Move all final PDFs from output directory to root rirectory
+  mv output/* .
+
+  # Delete output directory
+  rmdir output
+
+echo -e "> Finished!\n> Remenber to delete or move the pdfocr.sh file!"
