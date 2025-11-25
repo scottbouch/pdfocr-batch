@@ -1,3 +1,5 @@
+This is a collection of rough scripts to help with batch procesing PDF files. Some refinement is needed.
+
 # pdfocr.sh
 Batch process a directory of plain PDFs, to PDFs with OCR layer.\
 Linux BASH
