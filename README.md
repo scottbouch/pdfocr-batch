@@ -22,3 +22,12 @@ $ ./pdfocr.sh
 This script deletes the original PDF files and replces them with the OCR versions. If you want to keep the originals, work on copies of them.
 
 TODO: Refine settings to reduce file sizes.
+
+# jpgpdfocr.sh
+Batch process a directory of JPGs, combine to a single PDF with OCR layer.\
+Linux BASH
+
+
+# pdfnoindex.sh
+Batch process a directory of PDFs, removes index bookmarks - handy after splitting a big PDF into smaller chunks.\
+Linux BASH
